@@ -22,8 +22,8 @@ PART TWO:
 {SolvePartTwo()}";
         }
 
-        protected abstract string SolvePartOne();
+        public abstract string SolvePartOne();
 
-        protected abstract string SolvePartTwo();
+        public abstract string SolvePartTwo();
     }
 }

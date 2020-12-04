@@ -1,7 +1,5 @@
 ﻿using Advent.Solutions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Advent
 {
@@ -9,7 +7,7 @@ namespace Advent
     {
         static void Main(string[] args)
         {
-            AdventDay day = new Day3();
+            AdventDay day = new Day5();
             Console.WriteLine(day.Solve());
         }
     }

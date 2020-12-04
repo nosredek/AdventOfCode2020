@@ -1,31 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Advent.Solutions
 {
     public class Day1 : AdventDay
     {
-        private int[] _input;
-        public Day1() : base(1){
-            _input = Input.Split('\n',StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
+        private int[] _input => Input.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
+
+        public Day1() : base(1)
+        {
         }
 
-        protected override string SolvePartOne()
+        public override string SolvePartOne()
         {
             foreach (var x in _input)
             {
                 foreach (var y in _input)
                 {
                     if (x + y == 2020)
-                        return (x * y).ToString(); 
+                        return (x * y).ToString();
                 }
             }
             return null;
         }
 
-        protected override string SolvePartTwo()
+        public override string SolvePartTwo()
         {
             foreach (var x in _input)
             {
