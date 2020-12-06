@@ -3,32 +3,43 @@ using NUnit.Framework;
 
 namespace Advent.Test
 {
-    public class Day5Tests
+    public class Day6Tests
     {
         private AdventDay _day;
 
         [SetUp]
         public void Setup()
         {
-            _day = new Day5
+            _day = new Day6
             {
-                DebugInput = @"BFFFBBFRRR
-FFFBBBFRRR
-BBFFBBFRLL".Replace("\r", "")
+                DebugInput = @"abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b".Replace("\r", "")
             };
         }
 
         [Test]
         public void Part1()
         {
-            Assert.AreEqual("820", _day.SolvePartOne());
+            Assert.AreEqual("11", _day.SolvePartOne());
         }
 
         [Test]
         public void Part2()
         {
-            //no test
-            Assert.Pass();
+            Assert.AreEqual("6", _day.SolvePartTwo());
         }
     }
 }
