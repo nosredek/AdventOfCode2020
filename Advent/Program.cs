@@ -7,7 +7,7 @@ namespace Advent
     {
         static void Main(string[] args)
         {
-            AdventDay day = new Day6();
+            AdventDay day = new Day7();
             Console.WriteLine(day.Solve());
         }
     }
