@@ -12,7 +12,7 @@ namespace Advent.Solutions
 
         public override string SolvePartOne()
         {
-            var commands = Input.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().Split(' ')).Select(i => (i[0],int.Parse(i[1]))).ToList();
+            var commands = Input.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().Split(' ')).Select(i => (i[0], int.Parse(i[1]))).ToList();
             var acc = 0;
             var set = new HashSet<int>();
             var commandLine = 0;
@@ -24,9 +24,11 @@ namespace Advent.Solutions
                 {
                     case "nop":
                         break;
+
                     case "acc":
                         acc += argument;
                         break;
+
                     case "jmp":
                         commandLine += argument;
                         continue;
@@ -38,68 +40,66 @@ namespace Advent.Solutions
 
         public override string SolvePartTwo()
         {
-            var commands = Input.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().Split(' ')).Select(i => (i[0], int.Parse(i[1]))).ToList();
-            var set = new HashSet<int>();
-            var jmpNopSet = new HashSet<int>();
-            var commandLine = 0;
-            while (!set.Contains(commandLine))
-            {
-                set.Add(commandLine);
-                (var command, var argument) = commands[commandLine];
-                switch (command)
+            var commands = Input.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().Split(' ')).Select((item, index) => (index, line: (command: item[0], argument: int.Parse(item[1]))))
+                .ToDictionary(i => i.index, i =>
                 {
-                    case "nop":
-                        jmpNopSet.Add(commandLine);
-                        break;
-                    case "acc":
-                        break;
-                    case "jmp":
-                        jmpNopSet.Add(commandLine);
-                        commandLine += argument;
-                        continue;
-                }
-                commandLine++;
+                    return i.line.command switch
+                    {
+                        "jmp" => new int[] { i.index + i.line.argument, i.index + 1 },
+                        "nop" => new int[] { i.index + 1, i.index + i.line.argument },
+                        _ => new int[] { i.index + 1 },
+                    };
+                });
+
+            var linesToFinish = new HashSet<int> { commands.Count - 1 };
+            var lines = commands.Where(i => i.Value.First() == commands.Count - 1).Select(i => i.Key);
+            while (lines.Any())
+            {
+                linesToFinish.UnionWith(lines);
+                lines = commands.Where(i => lines.Contains(i.Value.First())).Select(i => i.Key).ToList();
             }
 
-            foreach(var jmpOrNopLine in jmpNopSet)
+            var commandLines = Input.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().Split(' ')).Select(i => (i[0], int.Parse(i[1]))).ToList();
+
+            var acc = 0;
+            var set = new HashSet<int>();
+            var commandLine = 0;
+            var changed = false;
+            while (!set.Contains(commandLine))
             {
-                var acc = 0;
-                set = new HashSet<int>();
-                commandLine = 0;
-                while (!set.Contains(commandLine))
+                if (commandLine >= commands.Count)
+                    return acc.ToString();
+                set.Add(commandLine);
+                (var command, var argument) = commandLines[commandLine];
+                if (linesToFinish.Contains(commands[commandLine].Last()) && !changed)
                 {
-                    if (commandLine >= commands.Count)
-                        return acc.ToString();
-                    set.Add(commandLine);
-                    (var command, var argument) = commands[commandLine];
-                    if (commandLine == jmpOrNopLine)
+                    changed = true;
+                    switch (command)
                     {
-                        switch (command)
-                        {
-                            case "nop":
-                                commandLine += argument;
-                                continue;
-                            case "jmp":
-                                break;
-                        }
+                        case "nop":
+                            commandLine += argument;
+                            continue;
+                        case "jmp":
+                            break;
                     }
-                    else
-                    {
-                        switch (command)
-                        {
-                            case "nop":
-                                break;
-                            case "acc":
-                                acc += argument;
-                                break;
-                            case "jmp":
-                                commandLine += argument;
-                                continue;
-                        }
-                    }
-                    commandLine++;
-                
                 }
+                else
+                {
+                    switch (command)
+                    {
+                        case "nop":
+                            break;
+
+                        case "acc":
+                            acc += argument;
+                            break;
+
+                        case "jmp":
+                            commandLine += argument;
+                            continue;
+                    }
+                }
+                commandLine++;
             }
 
             return null;
