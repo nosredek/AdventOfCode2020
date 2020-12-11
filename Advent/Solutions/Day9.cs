@@ -17,7 +17,7 @@ namespace Advent.Solutions
             var longInput = Input.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray() ;
 
 
-            for (int i = _preambleSize; i < longInput.Count(); i++)
+            for (int i = _preambleSize; i < longInput.Length; i++)
             {
                 var preamble = longInput[(i - _preambleSize)..i];
                 if (preamble.Any(item => (preamble.Contains(longInput[i] - item) && (longInput[i] - item) != item)))
@@ -32,7 +32,7 @@ namespace Advent.Solutions
             var longInput = Input.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToArray();
 
             long targetNum = 0;
-            for (int i = _preambleSize; i < longInput.Count(); i++)
+            for (int i = _preambleSize; i < longInput.Length; i++)
             {
                 var preamble = longInput[(i - _preambleSize)..i];
                 if (preamble.Any(item => (preamble.Contains(longInput[i] - item) && (longInput[i] - item) != item)))
